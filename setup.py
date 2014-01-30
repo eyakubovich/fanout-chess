@@ -6,5 +6,5 @@ setup(name='FanoutChess',
       author='Eugene Yakubovich',
       author_email='example@example.com',
       url='http://www.python.org/sigs/distutils-sig/',
-      install_requires=['bottle', 'requests', 'PyJWT']
+      install_requires=['bottle', 'requests', 'PyJWT', 'redis']
      )
