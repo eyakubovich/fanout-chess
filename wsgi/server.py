@@ -8,8 +8,6 @@ import time
 from base64 import b64decode
 import jwt
 
-from mako.template import Template
-
 FO_REALM_ID = '83b2cca6'
 FO_REALM_KEY = os.environ['FO_REALM_KEY']
 STATIC_ROOT = './static'
