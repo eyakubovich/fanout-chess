@@ -26,7 +26,7 @@
 <div class="container">
 	%for game_id, game in games.items():
 		<div class="tile">
-			<div id="game_id" class="small-board" data-pos="{{game.board}}"></div>
+			<div  class="small-board" data-pos="{{game.board}}"></div>
 			<div class="overlay">
 				%if game.joinable:
 					<form method="POST" action="/games/{{game_id}}/join">
@@ -40,9 +40,12 @@
 	%end
 
 	<div class="tile">
-		<form method="POST" action="/games">
-			<input type="submit" value="New Game">
-		</form>
+		<div class="small-board"></div>
+		<div class="overlay">
+			<form method="POST" action="/games">
+				<input type="submit" value="New Game" class="game-btn">
+			</form>
+		</div>
 	</div>
 </div>
 
