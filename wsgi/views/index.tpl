@@ -30,10 +30,10 @@
 			<div class="overlay">
 				%if game.joinable:
 					<form method="POST" action="/games/{{game_id}}/join">
-						<input type="submit" value="Join" class="game-btn">
+						<input type="submit" value="Join" class="game-btn hand-cursor">
 					</form>
 				%else:
-					<a href="/games/{{game_id}}/" class="game-btn">Watch</a>
+					<a href="/games/{{game_id}}/" class="game-btn hand-cursor">Watch</a>
 				%end
 			</div>
 		</div>
@@ -43,7 +43,7 @@
 		<div class="small-board"></div>
 		<div class="overlay">
 			<form method="POST" action="/games">
-				<input type="submit" value="New Game" class="game-btn">
+				<input type="submit" value="New Game" class="game-btn hand-cursor">
 			</form>
 		</div>
 	</div>
