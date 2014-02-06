@@ -17,7 +17,8 @@
 			var game_id = boardDiv.data('gameid');
 			var side = boardDiv.data('side');
 
-			var fanout = new Fpp.Client('https://pubsub.fanout.io/r/83b2cca6');
+			var realm = $('body').data('fo-realm');
+			var fanout = new Fpp.Client('https://pubsub.fanout.io/r/' + realm);
 			var channel = fanout.Channel(game_id);
 
 			var game = new ChessGame(boardDiv, {
@@ -47,7 +48,7 @@
 	</script>
 </head>
 
-<body>
+<body data-fo-realm="{{realm}}">
 	<div id="board" class="large-board" data-pos="{{game.board}}" data-gameid="{{game_id}}" data-side="{{side}}"></div>
 	<p id="status"></p>
 </body>

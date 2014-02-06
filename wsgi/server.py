@@ -1,13 +1,13 @@
 import os
 import uuid
-import bottle
-import requests
 import json
-
+import datetime
 import time
 from base64 import b64decode
-import jwt
 
+import bottle
+import requests
+import jwt
 import redis
 
 FO_REALM_ID = '83b2cca6'
@@ -45,6 +45,7 @@ class Game:
 			self.board = ''
 			self.white_turn = True
 			self.joinable = True
+			self.created_at = str(datetime.datetime.now())
 
 	def move(self, pos, is_white):
 		if is_white != self.white_turn:
@@ -76,8 +77,8 @@ class GamesCollection:
 		self.r.set(gameid, str(game))
 
 	def items(self):
-		for gameid in self.r.keys():
-			yield gameid, self.get(gameid)
+		itms = [ (gameid, self.get(gameid)) for gameid in self.r.keys() ]
+		return sorted(itms, key=lambda x: x[1].created_at)
 
 @bottle.get('/')
 @bottle.view('index')
@@ -109,6 +110,7 @@ def move(game_id):
 	game.move(pos, is_white)
 	games.set(game_id, game)
 
+	fanout = FanoutClient(FO_REALM_ID, FO_REALM_KEY)
 	fanout.publish(game_id, dict(move=mv, side=side))
 
 @bottle.get('/games/<game_id>/')
@@ -116,15 +118,13 @@ def move(game_id):
 def get_game(game_id):
 	side = bottle.request.query.get('side', '')
 	game = games.get(game_id) or bottle.abort(404)
-	return dict(game_id=game_id, game=game, side=side)
+	return dict(game_id=game_id, game=game, side=side, realm=FO_REALM_ID)
 
 @bottle.get('/static/<path:path>')
 def statics(path):
 	return bottle.static_file(path, root=STATIC_ROOT)
 
 games = GamesCollection()
-
-fanout = FanoutClient(FO_REALM_ID, FO_REALM_KEY)
 
 # This must be added in order to do correct path lookups for the views
 try:
