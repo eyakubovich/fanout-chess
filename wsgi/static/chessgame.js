@@ -43,9 +43,16 @@ function ChessGame(el, cfg) {
 
 	this.move = function(mv) {
 		var parts = mv.split('-');
-		if( game.move({ from: parts[0], to: parts[1] }) === null )
+		var move = {
+			from: parts[0],
+			to: parts[1],
+			promotion: 'q' // NOTE: always promote to a pawn for example simplicity
+		};
+
+		if( game.move(move) === null )
 			return;
-		board.move(mv);
+
+		board.position(game.fen());
 	}
 
 	this.status = function() {
